@@ -87,9 +87,6 @@
 #'        variables, then lambda_min_ratio is set to 0.0001; if the number of observations is less than the number of
 #'        variables, then lambda_min_ratio is set to 0.01. Defaults to 0.
 #' @param beta_constraints Beta constraints
-#' @param max_active_predictors Maximum number of active predictors during computation. Use as a stopping criterion to prevent expensive model
-#'        building with many predictors. Default indicates: If the IRLSM solver is used, the value of
-#'        max_active_predictors is set to 5000 otherwise it is set to 100000000. Defaults to -1.
 #' @param interactions A list of predictor column indices to interact. All pairwise combinations will be computed for the list.
 #' @param interaction_pairs A list of pairwise (first order) column interactions.
 #' @param obj_reg Likelihood divider in objective value computation, default is 1/nobs Defaults to -1.
@@ -173,7 +170,6 @@ h2o.gam <- function(x,
                     prior = 0,
                     lambda_min_ratio = 0,
                     beta_constraints = NULL,
-                    max_active_predictors = -1,
                     interactions = NULL,
                     interaction_pairs = NULL,
                     obj_reg = -1,
@@ -231,6 +227,7 @@ h2o.gam <- function(x,
   if( !missing(offset_column) && !is.null(offset_column))  args$x_ignore <- args$x_ignore[!( offset_column == args$x_ignore )]
   if( !missing(weights_column) && !is.null(weights_column)) args$x_ignore <- args$x_ignore[!( weights_column == args$x_ignore )]
   if( !missing(fold_column) && !is.null(fold_column)) args$x_ignore <- args$x_ignore[!( fold_column == args$x_ignore )]
+  if( !missing(gam_columns) && !is.null(gam_columns)) args$x_ignore <- args$x_ignore[!( args$x_ignore %in% gam_columns )]
   parms$ignored_columns <- args$x_ignore
   parms$response_column <- args$y
   parms$gam_columns <- gam_columns
@@ -305,8 +302,6 @@ h2o.gam <- function(x,
     parms$prior <- prior
   if (!missing(lambda_min_ratio))
     parms$lambda_min_ratio <- lambda_min_ratio
-  if (!missing(max_active_predictors))
-    parms$max_active_predictors <- max_active_predictors
   if (!missing(interaction_pairs))
     parms$interaction_pairs <- interaction_pairs
   if (!missing(obj_reg))
@@ -412,7 +407,6 @@ h2o.gam <- function(x,
                                     prior = 0,
                                     lambda_min_ratio = 0,
                                     beta_constraints = NULL,
-                                    max_active_predictors = -1,
                                     interactions = NULL,
                                     interaction_pairs = NULL,
                                     obj_reg = -1,
@@ -477,6 +471,7 @@ h2o.gam <- function(x,
   if( !missing(offset_column) && !is.null(offset_column))  args$x_ignore <- args$x_ignore[!( offset_column == args$x_ignore )]
   if( !missing(weights_column) && !is.null(weights_column)) args$x_ignore <- args$x_ignore[!( weights_column == args$x_ignore )]
   if( !missing(fold_column) && !is.null(fold_column)) args$x_ignore <- args$x_ignore[!( fold_column == args$x_ignore )]
+  if( !missing(gam_columns) && !is.null(gam_columns)) args$x_ignore <- args$x_ignore[!( args$x_ignore %in% gam_columns )]
   parms$ignored_columns <- args$x_ignore
   parms$response_column <- args$y
   parms$gam_columns <- gam_columns
@@ -549,8 +544,6 @@ h2o.gam <- function(x,
     parms$prior <- prior
   if (!missing(lambda_min_ratio))
     parms$lambda_min_ratio <- lambda_min_ratio
-  if (!missing(max_active_predictors))
-    parms$max_active_predictors <- max_active_predictors
   if (!missing(interaction_pairs))
     parms$interaction_pairs <- interaction_pairs
   if (!missing(obj_reg))

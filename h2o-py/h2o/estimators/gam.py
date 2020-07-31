@@ -36,11 +36,11 @@ class H2OGeneralizedAdditiveEstimator(H2OEstimator):
                    "solver", "alpha", "lambda_", "lambda_search", "early_stopping", "nlambdas", "standardize",
                    "missing_values_handling", "plug_values", "compute_p_values", "remove_collinear_columns",
                    "intercept", "non_negative", "max_iterations", "objective_epsilon", "beta_epsilon",
-                   "gradient_epsilon", "link", "prior", "lambda_min_ratio", "beta_constraints", "max_active_predictors",
-                   "interactions", "interaction_pairs", "obj_reg", "export_checkpoints_dir", "stopping_rounds",
-                   "stopping_metric", "stopping_tolerance", "balance_classes", "class_sampling_factors",
-                   "max_after_balance_size", "max_confusion_matrix_size", "max_hit_ratio_k", "max_runtime_secs",
-                   "custom_metric_func", "num_knots", "knot_ids", "gam_columns", "bs", "scale", "keep_gam_cols"}
+                   "gradient_epsilon", "link", "prior", "lambda_min_ratio", "beta_constraints", "interactions",
+                   "interaction_pairs", "obj_reg", "export_checkpoints_dir", "stopping_rounds", "stopping_metric",
+                   "stopping_tolerance", "balance_classes", "class_sampling_factors", "max_after_balance_size",
+                   "max_confusion_matrix_size", "max_hit_ratio_k", "max_runtime_secs", "custom_metric_func",
+                   "num_knots", "knot_ids", "gam_columns", "bs", "scale", "keep_gam_cols"}
 
     def __init__(self, **kwargs):
         super(H2OGeneralizedAdditiveEstimator, self).__init__()
@@ -678,23 +678,6 @@ class H2OGeneralizedAdditiveEstimator(H2OEstimator):
 
 
     @property
-    def max_active_predictors(self):
-        """
-        Maximum number of active predictors during computation. Use as a stopping criterion to prevent expensive model
-        building with many predictors. Default indicates: If the IRLSM solver is used, the value of
-        max_active_predictors is set to 5000 otherwise it is set to 100000000.
-
-        Type: ``int``  (default: ``-1``).
-        """
-        return self._parms.get("max_active_predictors")
-
-    @max_active_predictors.setter
-    def max_active_predictors(self, max_active_predictors):
-        assert_is_type(max_active_predictors, None, int)
-        self._parms["max_active_predictors"] = max_active_predictors
-
-
-    @property
     def interactions(self):
         """
         A list of predictor column indices to interact. All pairwise combinations will be computed for the list.
@@ -1009,3 +992,9 @@ class H2OGeneralizedAdditiveEstimator(H2OEstimator):
     @Lambda.setter
     def Lambda(self, value):
         self._parms["lambda"] = value
+
+    def _additional_used_columns(self, parms):
+        """
+        :return: Gam columns if specified.
+        """
+        return parms["gam_columns"]
