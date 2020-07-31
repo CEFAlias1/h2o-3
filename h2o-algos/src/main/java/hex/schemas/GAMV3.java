@@ -55,7 +55,6 @@ public class GAMV3 extends ModelBuilderSchema<GAM, GAMV3, GAMV3.GAMParametersV3>
             "prior",
             "lambda_min_ratio",
             "beta_constraints",
-            "max_active_predictors",
             "interactions",
             "interaction_pairs",
             "obj_reg",
@@ -168,11 +167,6 @@ public class GAMV3 extends ModelBuilderSchema<GAM, GAMV3, GAMV3.GAMParametersV3>
 
     @API(help = "Beta constraints", direction = API.Direction.INPUT /* Not required, to allow initial params validation: , required=true */)
     public FrameKeyV3 beta_constraints;
-
-    @API(help="Maximum number of active predictors during computation. Use as a stopping criterion" +
-            " to prevent expensive model building with many predictors." + " Default indicates: If the IRLSM solver is used," +
-            " the value of max_active_predictors is set to 5000 otherwise it is set to 100000000.", direction = Direction.INPUT, level = Level.expert)
-    public int max_active_predictors = -1;
 
     @API(help="A list of predictor column indices to interact. All pairwise combinations will be computed for the list.", direction=Direction.INPUT, level=Level.expert)
     public String[] interactions;
